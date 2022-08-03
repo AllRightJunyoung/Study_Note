@@ -46,7 +46,7 @@
 ## NPM 전역(global) 설치 명령어
 -  npm install gulp —global
 -  /user/local/lib/node_modules 에 설치가된다 (맥북기준)
-- 시스템상에서 제공할수 있는 라이브러리들을 사용시 이용됨  (global을 이용해서 설치함)
+- 시스템상에서 제공할수 있는 라이브러리들을 사용시 이용  (global을 이용해서 설치함)
   - npm i gulp —global
 
 ## NPM 지역(local) 설치 명령어
@@ -62,13 +62,13 @@
   - package.json에 devDependencies 항목에 추가됨 
     - devDependencies에는 webpack,sass,js-compression와 같은 항목을 주로 설치한다.
 
-### npm start
+## npm start 명령어
   - package.json 의 scripts에 있는 start명령어를 실행한다.
 
-### npm update
-  - 설치된 패키지를 업데이트하는 명령어
+## npm update 명령어
+  - 설치된 패키지를 업데이트 한다.
 
-### npm run
+## npm run 명령어
   - script를 실행하는 명령어
   - script에 build명령어가 존재하면 npm run build를 하면된다.
 
