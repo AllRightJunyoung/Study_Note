@@ -85,6 +85,8 @@ initApp();
 
 ~~~
 - 위 코드를 그림으로 나타내면 아래와 같다.
+<img width="740" alt="webpack-entry 90e26197 (1)" src="https://user-images.githubusercontent.com/100929485/183249473-18ed30d2-43f6-43d0-a6c7-efe1a37b4b70.png">
+
 
 ### Entry 속성에는 여러가지가지가 들어갈수있나?
 - entry속성안에는 여러가지 js가 들어갈수 있다 
