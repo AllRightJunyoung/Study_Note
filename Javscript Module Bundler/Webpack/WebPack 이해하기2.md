@@ -1,7 +1,65 @@
-# WebPack의 Config.js파일 옵션
+# WebPack의 Config.js 파일 속성이해하기
+
+## 왜 webpack.config.js 파일을 사용할까 ? 
+- npm run build 시 매번 scripts의 build 옵션에 많은 명령어를 길게 추가해야되는 번거로움을 해결해준다.
+- 코드예시는 아래와 같다. 
+~~~ js
+// package.json 파일
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":"webpack --mode=none --entry=src/index/js --output=public/output.js" 
+    // 매우 불편함 => webpack.config.js로 대체
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^6.7.1",
+    "mini-css-extract-plugin": "^2.6.1",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  }
+}
+~~~
+
+## webpack.config.js 파일에 대해 살펴보고 이에대한 속성에 대해 설명하겠다.
+~~~ js
+// webpack.config.js
+var path = require('path');
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+module.exports = {
+  mode: 'none', // production, development, none
+  entry: './index.js', 
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+    ]
+  },
+  plugins: [
+    new MiniCssExtractPlugin()
+  ],
+	devtool: 'source-map'
+};
+~~~
 
 
-## Mode 
+
+
+## Mode (웹팩 버전4에서 추가됨)
 - 웹팩의 실행 방법을 결정하는 속성이다
 
 ### development 모드
@@ -24,39 +82,6 @@
 ### 왜 Source Map이 필요할까?
 - webpack을 사용해서 번들링을 하게 되면 bundle.js라는 하나의 파일이 만들어지는데 브라우저에서 디버깅할때 난독화된 bundle.js 파일을 디버깅해야됨
   - 난독화된 bundle.js를 디버깅하면 알아보기가 힘드므로 개발하는코드와 번들링된 코드를 연결시키는 sourceMap기능을 사용하면 개발하는 코드를 알아보기 쉽게 디버깅할수있음
-
-
-### Source Map 사용 예시
-- 아래 코드를 보면 devtool: 'source-map' 속성을 붙인것을 볼수있다.
-~~~js
-var path = require('path');
-
-module.exports = {
-	mode: 'production',
-	entry: './js/app.js',
-	output: {
-			path: path.resolve(__dirname, 'build'),
-			filename: '[chunkhash].bundle.js'
-	},
-	module: {
-		rules: [{
-			test: /\.m?js$/,
-			exclude: /(node_modules|bower_components)/,
-			use: {
-				loader: 'babel-loader',
-				options: {
-					presets: ['@babel/preset-env']
-				}
-			}
-		}]
-	},
-	stats: {
-			colors: true
-	},
-	devtool: 'source-map'
-};
-
-~~~
 
 ## Entry
 - 웹팩에서 웹 자원을 변환하기 위해 필요한 최초 진입점이자 자바스크립트 파일경로이다.
@@ -145,6 +170,7 @@ module.exports = {
 
 ## Loader (매우 중요하다)
 - 웹팩은 웹 애플리케이션을 구성하는 자원(HTML,CSS,Javascript,Images)를 각각의 모듈로보고 이를 조합해서 병합된 하나의 결과물을 만드는 도구이다. 하지만 Javscript뿐만아니라 다른 자원들을 사용하기위해선 Loader가 필요하다.
+- webpack.config.js에 module 속성 안에 들어간다.
 
 ### Loader가 왜 필요 할까?
 - 웹팩은 자바스크립트와 json파일만 해석이 가능하다. 자바스크립트 파일이 아닌 웹 자원 (HTML,CSS,Images,폰트 등)을 사용하려면 로더를 사용하여 js코드 안에 가져와야한다.
@@ -197,8 +223,41 @@ import './base.css';
         - css-loader: 웹팩안에 css가 들어가게 해준다.
         - 즉 로더는 오른쪽부터 왼쪽으로 반영이된다 즉 1. css-loader , 2.style-loader 인데 두개의 순서가 바뀌게되면 웹팩안에 css가 들어가있지도 않은데 style태그안에 css스타일을 넣으려고하므로 오류가 발생한다
 
+### 자주 사용 하는 Loader 목록 
+- Babel Loader
+- Sass Loader
+- File Loader
+- Vue Loader
+- TS Loader
 
-## 플러그인에 대해 추가할 예정 
+### Loader 여러개를 어떻게 넣는예시 
+~~~ js
+// webpack.config.js
+module: {
+    rules: [
+      { test: /\.css$/, use: 'css-loader' },
+      { test: /\.ts$/, use: 'ts-loader' },
+      // ...
+    ]
+  }
+~~~
+
+> 각 로더에 대한 설정법과 사용하는방법에 대해 자세히 다루고 있음 https://webpack.js.org/loaders/
+
+
+## Plugin
+- 웹팩으로 변환한 파일(번들돤 파일)에 추가적인 기능을 더하고 싶을떄 사용하는 속성이다.
+-  플러그인은 해당 결과물(번들된파일)의 형태를 바꾸는 역할 , 로더는 파일을 해석하고 변환하는 과정에 관여한다.
+  1. 번들링된 js파일 안에있는 style을 css파일로 추출하는 플러그인 (MiniCssExtractPlugin)
+  2. 번들된 CSS,JS파일을 각각의 HTML파일에 태그로 추가해주는 플러그인 (HtmlWebpackPlugin)
+  3. 번들링된 결과물에  빌드 정보나 커밋 버전 내용 등을 추가할 수 있음 (BannerPlugin)
+  4. 빌드 이전의 결과물을 제거 (CleanWebpackPlugin)
+
+- 많이 쓰이는 플러그인 목록
+ - split-chunks-plugin , clean-webpack-plugin, image-webpack-loader,webpack-bundle-analyzer-plugin
+- 번들링된파일에 추가적인 기능을 더하는것 뿐만아니라 웹팩 변환 과정에 있어 전반에 대한 제어권도 가지고 있음 
+
+
 
 
 # 참고자료 
