@@ -113,7 +113,7 @@ initApp();
 <img width="740" alt="webpack-entry 90e26197 (1)" src="https://user-images.githubusercontent.com/100929485/183249473-18ed30d2-43f6-43d0-a6c7-efe1a37b4b70.png">
 
 
-### Entry 속성에는 여러가지가지가 들어갈수있나?
+### Entry 속성에는 여러가지가 들어갈수있나?
 - entry속성안에는 여러가지 js가 들어갈수 있다 
   - 여러개가 들어갈경우 주로 멀티 페이지 애플리케이션에서 활용이된다.  하지만 싱글 페이지 어플리케이션에서는 하나만 들어간다.
 
@@ -177,7 +177,7 @@ module.exports = {
   - import 구문으로 해당 파일을 가져옴 (css)
 
 
-### Loader를 사용해서 CSS를 js 파일로 가져오기
+### Loader를 사용해서 CSS를 js 파일로 가져오기 (css-loader,’style-loader’) 사용 예
 - 소스코드 예시
   1. webpack.config.js 설정
   2. index.js 파일 에 import
@@ -212,7 +212,7 @@ import './base.css';
 // 3. npm run build로 번들링
 ~~~
 
-### Loader를 사용해서 CSS를 js 파일로 가져오기 (상세 설명)
+### Loader를 사용해서 CSS를 js 파일로 가져오기 (css-loader,’style-loader’) 사용 예 (상세 설명)
 - Loader(Module)의 rules의 test 속성은 로더를 적용할 파일 유형을 작성한다 (정규표현식으로 표현)
 - Loader(Module)의 rules의 use 속성은 해당 파일에 적용할 로더의 이름이 들어간다 (배열인데 맨끝에서 앞쪽순서로 적용됨 )
 - 로더부분(modules)의 use에는 style-loader와 css-loader가 있다 
@@ -247,15 +247,19 @@ module: {
 
 ## Plugin
 - 웹팩으로 변환한 파일(번들돤 파일)에 추가적인 기능을 더하고 싶을떄 사용하는 속성이다.
--  플러그인은 해당 결과물(번들된파일)의 형태를 바꾸는 역할 , 로더는 파일을 해석하고 변환하는 과정에 관여한다.
+-  플러그인은 해당 결과물(번들된파일)의 형태를 바꾸는 역할 , 반면 로더는 파일을 해석하고 변환하는 과정에 관여한다.
+-  번들링된파일에 추가적인 기능을 더하는것 뿐만아니라 웹팩 변환 과정에 있어 전반에 대한 제어권도 가지고 있음 
+![diagram 519da03f](https://user-images.githubusercontent.com/100929485/183278506-2b7ecdff-0c1e-4d93-a185-c0a167c4aacc.png)
+
+-  플러그인에 대한 각 예시
   1. 번들링된 js파일 안에있는 style을 css파일로 추출하는 플러그인 (MiniCssExtractPlugin)
   2. 번들된 CSS,JS파일을 각각의 HTML파일에 태그로 추가해주는 플러그인 (HtmlWebpackPlugin)
   3. 번들링된 결과물에  빌드 정보나 커밋 버전 내용 등을 추가할 수 있음 (BannerPlugin)
   4. 빌드 이전의 결과물을 제거 (CleanWebpackPlugin)
 
 - 많이 쓰이는 플러그인 목록
- - split-chunks-plugin , clean-webpack-plugin, image-webpack-loader,webpack-bundle-analyzer-plugin
-- 번들링된파일에 추가적인 기능을 더하는것 뿐만아니라 웹팩 변환 과정에 있어 전반에 대한 제어권도 가지고 있음 
+  - split-chunks-plugin , clean-webpack-plugin, image-webpack-loader,webpack-bundle-analyzer-plugin
+  
 
 
 
