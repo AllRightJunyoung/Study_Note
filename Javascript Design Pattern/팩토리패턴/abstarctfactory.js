@@ -10,7 +10,7 @@ class FoodFactory{
     }
 }
 
-class PizzaFactory extends FoodFactory{ // Concrete Factory
+class PizzaFactory extends FoodFactory{ // Concrete Factory 1 
     createFood(type) {
         switch (type) {
             case '레드피자':
@@ -21,7 +21,7 @@ class PizzaFactory extends FoodFactory{ // Concrete Factory
     }
 }
 
-class NoodleFactory extends FoodFactory{ // Concrete Factory
+class NoodleFactory extends FoodFactory{ // Concrete Factory 2
       createFood(type) {
         switch (type) {
             case '라면':

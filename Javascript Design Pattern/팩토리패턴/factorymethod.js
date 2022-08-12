@@ -1,3 +1,5 @@
+
+// Concreate Creator 
 class PizzaFactory{
     createpizza(name) {
         switch (name) {
@@ -10,7 +12,7 @@ class PizzaFactory{
 
 }
 
-// 인터페이스 (interface)
+// 인터페이스 (interface) Product
 class Pizza{
     constructor(price) {
         this.price=price
@@ -22,7 +24,7 @@ class Pizza{
 }
 
 
-// 구체적인 implements 
+// Concrete Product A
 class PepperoniPizza extends Pizza{
     constructor() {
         super(5500)
@@ -32,7 +34,8 @@ class PepperoniPizza extends Pizza{
     }
 }
 
-// 구체적인 implements 
+
+// Concrete Product B
 class PineapplePizza extends Pizza {
     constructor() {
         super(6500)
