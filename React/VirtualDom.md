@@ -6,48 +6,7 @@
 - 브라우저에서는 읽을수 없으므로 바벨을 사용해서 일반적인 자바스크립트 코드로 변환시켜야함 
 - HTML과 비슷한 형태로 작성이 가능함 
 
-## JSX 문법 예시
 
-~~~jsx
-// 1. JSX문법 
-function Component(){
-    return (
-        <div className="hi">
-        <h1>Hello</h1>
-        </div>
-    )
-} 
-
-// 2. 아래와같이 변경
-function Component(){
-    return React.createElement('div',{
-        className:"hi"
-    },React.createElement("h1",null,"Hello"))
-}
-
-// 3. React.createElement 생성된 객체 아래와 같이 변경됨  => 불변성을 유지하면서 생성됨 
-// 자바스크립트의 객체와 같이 
-const element={
-    type:'div',
-    props:{
-        className:'hi',
-        children:[
-            {
-                type:h1,
-                children:'Hello'
-            }
-        ]
-    }
-
-}
-
-~~~
-
-## React.createElement 란?
-
-
-
-## ReactDom.render 란? 
 
 # Virtual DOM 이란?
 - Virtual DOM은 HTML DOM의 추상화 버전
