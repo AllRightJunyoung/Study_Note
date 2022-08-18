@@ -10,10 +10,30 @@
 - JSX기반 문법으로 사용 
 
 
+
+# JSX 란 ?
+- A syntax extension to Javascript (자바스크립트의 확장문법)
+- Javascript and XML 
+  - 내부적으로 XML/HTML 코드를 자바스크립트로 변환해준다
+
+# JSX 장점
+- 코드가 간결해짐 
+- 가독성이 좋아진다
+- Injection Attack을 방어할수있음
+  - 입력창에 문자나 숫자같은 일반적인 값이 아닌 소스코드를 입력함 (자바스크립트 코드 실행 ) XSS공격
+
+
+# JSX 장점 코드예시
+~~~jsx
+<div>Hello, {name}</div>
+React.createElement('div',null,`Hello,${name}`)
+~~~
+
+
 ## React.createElement 란?
 - 첫번쨰인자로 엘리먼트타입 , 두번쨰 엘리먼트 프로퍼티 (props), 세번쨰 자식노드들이들어감 
   - 첫번쨰 인자 = React 엘리먼트타입,HTML타입,React Fragment 타입이 올수있다.
-- JSX문법 => babel을 통해 React.createElement로 전환 
+- JSX문법 => babel을 통해 React.createElement로 전환 => Javscript 객체로 전환
 
 
 ~~~ jsx
