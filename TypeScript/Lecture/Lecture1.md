@@ -35,7 +35,7 @@ let todoitems:any
 
 ~~~
 
-# 타입스크립트 함수 타입 선언
+# 타입스크립트 함수 타입 지정
 
 ~~~ts
 // 함수의 파라미터에 타입을 정의하는 방식
@@ -53,12 +53,17 @@ function sub(a: number, b: number): number {
     
 }
 
-sub(1,2,3,4) 
+sub(1,2,3,4)  // 함수의 매개변수와 맞지않아 사용불가
 // => 타입스크립트에서는 이렇게 사용 불가 (정해진 parameter자체를 인식함)
+~~~
 
 
-// 함수의 옵셔널 파라미터 
-// ?를 붙이므로 인해 parameter가 들어올수도있고 안들어올수도있다는것을 명시가능 
+# 타입스크립트  옵셔널 파라미터 
+- ?를 붙이므로 인해 parameter가 들어올수도있고 안들어올수도있다는것을 명시가능 
+
+
+~~~ ts
+// b에 string이 들어올수있고 안들어올수있음 
 function log(a: string, b?: string) {
     
 } 
@@ -68,4 +73,4 @@ function log2(a: string, b?: string):void {
     
 } 
 
-~~~
+~~~ 
