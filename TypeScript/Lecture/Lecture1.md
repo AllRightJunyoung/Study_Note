@@ -63,6 +63,8 @@ sub(1,2,3,4)  // 함수의 매개변수와 맞지않아 사용불가
 
 
 ~~~ ts
+const player:{name:string, age?:number}={name:"nico"}
+
 // b에 string이 들어올수있고 안들어올수있음 
 function log(a: string, b?: string) {
     
