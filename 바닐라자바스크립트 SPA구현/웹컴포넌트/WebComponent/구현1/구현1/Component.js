@@ -33,6 +33,7 @@ export default class Component{
         
         const isTarget = (target) => children.includes(target) || target.closest(selector)
         
+        // 이벤트를 쉽게 처리할수있는함수 
         this.target.addEventListener(eventType, event => {
             if (!isTarget(event.target)) {
                 return false
