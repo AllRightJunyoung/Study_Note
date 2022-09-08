@@ -91,6 +91,53 @@ function getUniqueColors(dogs){
     }
     return [...unique]
 }
+~~~
+
+# 거짓 값이 있는 조건문을 축약하라
+- 거짓값 예시
+~~~ js
+false,null,0,NaN,'',""
+~~~
+- Object와 Map에서는 정의되지 않는 키값을 가져오면 undefined를 발생시키는데 이를 해결하는방법은있을까?
+  - 엄격한 일치를 이용해서 값이 있는지 확인해바라 (불리언 이용)
+  ~~~js
+  function check(is){
+      if(is.check !==true){
+
+      }
+  }
+
+  ~~~
+
+# 삼항 연산자로 빠르게 데이터를 확인하라
+- if else 문과 다르게 코드가 간결해지고 가독성이 좋아진다.
+  - 과도한 삼항연산자는 매우 안좋음 (차라리 if else문을 사용)
+~~~js
+const permissons= title==='과장' ? ['근로시간','수당'] : ['근로시간']
+
+~~~
+
+# 단락 평가를 이용해라 
+- 조건문을 좀 더 간소하게 표현 가능해짐
+- || (or 연산자) (둘중 하나라도 참이어야 동작), && 연산자 (둘다 참이어야 동작)
+
+
+~~~ js
+// ex 1 : || 예제
+function getIconPath(icon){
+    const path=icon.path ? icon.path : 'uploads/default.png';
+    // 단락평가로 간소화
+    const path=icon.path || 'uploads/default.png';
+}
+
+// ex 2 : && 예제 
+function getImage(userConfig){
+    const images=userConfig.images;
+    return images && images.length ? images[0] : 'default.png';
+}
+
+
 
 
 ~~~
+
