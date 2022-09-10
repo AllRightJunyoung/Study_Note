@@ -78,33 +78,62 @@ function getCityAndState({location}){
     }
 }
 
-// 펼침연산자사용 
+// 펼침연산자사용 응용편
 
+const tmp = {
+    location: {
+        city: 'Hobbs',
+        county: 'Lea',
+        state: {
+            name: 'New Mexico',
+            abbreviation: 'NM'
+        }
+    },
 
-const region={
-    city:'Hobbs',
-    county:'Lea'
-    state:{
-        name:'New Mexico',
-        abbreviation:'NM'
-    }
-}
-
-const landscape={
     title:'Landscape',
     photographer:'Nathan',
 }
 
-function getCityAndState({location,...details}){
-    const {city,state}=determineCityAndState(location)
-    return{
+
+function getCityAndState({ location, ...details }) {
+    const { city, state } = location
+    return {
         city,
-        state:state.abbreviation
+        state: state.abbreviation,
         ...details,
     }
-     //details에는 landscape의 정보가 들어감
-     //출력 결과
-
 }
+console.log(getCityAndState(tmp)) 
+// {city: 'Hobbs', state: 'NM', title: 'Landscape', photographer: 'Nathan'}
+
+~~~
+
+# 나머지 매개변수로 여러개의 인수를 변수로 전달하라
+- 전체 매개변수를 알수없는 비슷한 매개변수들을 처리하는방법
+  - 단점 : 마지막인자로 무조건 들어가야됨 
+
+~~~js
+
+function validateCharacterCount(max,items){
+    return items.every(item=>item.length<max)
+}
+validateCharacterCount(10,['Hobbs','Eagels'])
+
+// 위코드의경우 인자를 배열형태로 안보내면 타입 에러가 발생함
+validateCharacterCount(10,'wwww') //TypeError
+
+// 아래와 같은 방법으로 arguments를 배열로 변환하여 해결이 가능하나 
+// 펼침연산자를 쓰면 더 쉽게 해결할수있다 
+function validateCharacterCount(max){
+    const items=Array.prototype.slice.call(arguments,1)
+    return items.every(item=>item.length<max)
+}
+
+// 개발자가 프로그램을 유지보수할시 인자값을 몰라도 쉽게 예측가능해짐
+function validateCharacterCount(max,...items){
+    return items.every(item=>item.length<max)
+}
+
+
 
 ~~~
