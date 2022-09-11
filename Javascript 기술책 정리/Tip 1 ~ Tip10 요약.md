@@ -154,7 +154,7 @@ function addFreeGift(cart){
 // 원본 배열을 변경한다 
 
 
-// side Effcet를 피하는 방법  (원본배열 변경x)
+// side Effcet를 피하는 방법  (원본배열 변경x 새로운배열반환)
 function addFreeGift(cart){
     if(cart.length>2){
         return [...cart,reward]
