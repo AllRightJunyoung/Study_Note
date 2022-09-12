@@ -1,7 +1,8 @@
-export default class Component2 extends HTMLElement {
+export default class Component extends HTMLElement {
 	connectedCallback() {
 		// 1. html 생성 부분
 		this.render();
+		this.setEvent();
 	}
 
 	// 3. 3. attribute가 바뀌면 실행되는 함수
@@ -20,4 +21,8 @@ export default class Component2 extends HTMLElement {
 		this.state = { ...this.state, ..._newState };
 		this.render();
 	}
+	// 이벤트 설정
+	setEvent() {}
+
+	componentDidMount() {}
 }
