@@ -1,0 +1,60 @@
+h1{
+    color: blue;
+}
+
+.class-selector{
+    color: green;
+}
+
+/* 태그 선택자 + 클래스선택자 */
+
+/* 위에 꺼랑 중복이지만 구체적이여서 우선순위가 높아서 green은무시됨 */
+h2.class-selector{
+    color:red
+}
+
+/* 다중 클래스 선택자 */
+.class-selector.yellow{
+    color: yellow;
+}
+
+/* 위에 꺼랑 중복이지만 구체적이여서 우선순위가 높아서 yellow는 무시됨 */
+h2.class-selector.yellow{
+    color: gold;
+}
+
+/* id 선택자 */
+#id-selector{
+    color: blueviolet;
+}
+
+/* 자손 선택자 */
+/* container의 ul 전부 */
+.container ul{
+    font-weight: bold;
+}
+
+/* 자식 선택자  1촌*/ 
+/* container 의 1촌 ol들중에 1촌 li 만 */
+.container > ul > li {
+    text-decoration-line: underline;
+}
+
+
+/* 뒤 따르는 형제 선택자 ~  */
+/* container의 ul li 의 뒤따르는 형제선택자 */
+.container > ul > li ~ ul >li{
+    font-weight: 300;
+}
+
+.container > ul> li:nth-of-type(1){
+    color: chocolate;
+}
+
+.container > ul> li:nth-of-type(2){
+    color: green;
+}
+.container > ul> li:nth-of-type(3){
+    color: orange;
+}
+
