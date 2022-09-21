@@ -59,7 +59,7 @@ members:
 # 브랜치간 rebase 충돌 해결하기
 1. 충돌한 부분을 수정한 뒤 git add * 
 2. git rebase --continue (충돌이 모두 해결 될때까지 반복한다 , 가지하나하나를 추가하는것이므로)
-3. 해결한뒤 git merge 브랜치명ㅇ르 하면됨
+3. 해결한뒤 git merge 브랜치명으로 하면됨
 
 # 브랜치간 merge, rebase 충돌시 작업 취소 하기
 - git merge --abort 사용
