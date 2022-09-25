@@ -1,0 +1,71 @@
+
+.user-component__phone span{
+    display: block;
+    margin-top: 10px;
+    color: var(--gray);
+    font-size: 15px;
+    text-align: center;
+}
+.user-component__phone i{
+   width: 15px;
+   color: red;
+   border: 2px solid red;
+   border-radius: 25px;
+}
+
+.more-icons{
+    margin-top: 20px;
+}
+.more-icons__row{
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+.more-icons__icons{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.more-icons__icons span{
+    margin-top: 15px;
+}
+.more-icons__icons.opacity{
+    opacity: 0;
+}
+.more-suggestions{
+     border-top: 1px solid rgba(0, 0,0,0.3);
+     margin-top: 30px;
+    
+}
+.more-suggetions__header{
+    margin-top:25px;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+.more-suggetions__body more-icons__row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.more-icons__container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.more-suggetions__body .more-icons__icons{
+    width: 60px;
+    height: 60px;
+    background-color: var(--yellow);
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.more-icons__container span{
+    color: var(--gray);
+    margin-top: 10px;
+}

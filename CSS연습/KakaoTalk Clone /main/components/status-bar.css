@@ -1,0 +1,17 @@
+.status-bar{
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content:space-between;
+}
+
+.status-bar__column{
+    margin-top: 10px;
+    margin-right: 15px;
+
+}
+.status-bar__column:first-child span,.status-bar__column:last-child span{
+    margin: 5px;
+}
+
+

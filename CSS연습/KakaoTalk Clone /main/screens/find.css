@@ -1,0 +1,129 @@
+
+.screen-header__setting-icon{
+    position: relative;
+
+}
+.screen-header__icon-badge{
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    left: 1px;
+    bottom: 20px;
+   
+    background-color: tomato;
+    border-radius: 50%;
+}
+.find-icons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; 
+}
+.find-icons__icon{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.find-icons__icon i{
+    font-size: 35px;
+}
+
+.find-icons__icon span{
+    margin-top: 25px;
+}
+.recommended-friends{
+position: relative;
+border-top: var(--main-border);
+border-bottom: var(--main-border);
+padding: 25px;
+margin: 25px 0px;
+
+}
+.recommended-friends__title{
+font-size: 15px;
+color: var(--gray);
+}
+.recommended-friends span{
+    display: block;
+    color:var(--gray);
+    text-align: center;
+    margin: 100px 0;    
+}
+.open-chat{
+    height: 50vh;
+
+}
+.open-chat__header{
+    display: flex;
+    justify-content: space-between;
+    opacity: 0.8;
+    margin-bottom: 25px;
+}
+.open-chat__header span{
+    opacity: 0.6;
+}
+
+.open-post {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.open-post__title{
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+.open-post_hashtags{
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+.open-post_members{
+    display: flex;
+    align-items: center;
+    margin-top:7px;
+ }
+
+.open-post_members .profile{
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+    border-radius: 50%;
+   
+}
+.open-post__member-count{
+    opacity: 0.5;
+    font-size: 14px;
+}
+.open-post_members .divider{
+    width: 1px;
+    height: 10px;
+    background-color: var(--gray);
+    margin: 0 5px;
+}
+.open-post__member-status {
+    color: #ffb0e0;
+}
+
+.open-post__photo{
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+}
+.open-post__heart-count{
+background-color: rgba(0, 0,0,0.5);
+color: white;
+position: absolute;
+border-radius: 20px;
+padding: 8px;
+margin: 8px;
+bottom: 0px;
+}
+.open-post__heart-count span{
+    margin-left: 3px;
+
+}
+.open-post__photo img{
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+}
