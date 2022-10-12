@@ -32,7 +32,7 @@ const element=<img src={user.avatar.url}></img>
 - ReactDom은 JSX에 삽입된 값을 렌더링하기전에 이스케이프하여 문자열로 변환된다. XSS 공격을 방지할수있따
 
 ## JSX를 createElement로 표현
-
+- JSX는 createElement로 추상화됨 아래와 같음
 ~~~jsx
 
 const element = (
