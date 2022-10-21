@@ -38,22 +38,18 @@
 
 # HTTP 메시지 (중요)
 
- start-line (시작라인) , header(헤더) , 공백라인 (CRLF) , messagebody으로 구성
+1. start-line (시작라인)
+2. header(헤더)
+3. 공백라인 (CRLF)
+4.messagebody으로 구성
 
-## HTTP 메시지 (start-line)
+## HTTP 메시지 (start-line : 시작라인)
 
-### Request 메시지
+- request-line / status-line으로 구별
+  - request-line : http method 종류 , http version, requerst-target(요청대상) ,CRLF(엔터)
+  - status-line : http 버전 , http 상태코드
 
-- HTTP메소드 종류가 들어감 (GET,POST,PUT,DELETE)
-- 요청대상 (절대경로 쿼리 )
-- HTTP Version이들어감
-
-### Response 메시지
-
-- HTTP 상태코드가 들어감 (중요) 200 ,400, 500
-- HTTP 버전
-
-## HTTP 메시지 (header)
+## HTTP 메시지 헤더 (header)
 
 - HTTP 전송에 필요한 모든 부가정보가 들어가있음
   - 메시지바디크기 ,압축 ,인증 정보 ,클라이언트 정보 ,서버애플리케이션 정보,캐시정보등...
@@ -61,4 +57,4 @@
 
 ## HTTP 메시지 (message-body)
 
-- 실제 전송할 데이터 (HTML,문서,이미지 ,영상 )
+- 실제 전송할 데이터 (HTML,문서,이미지 ,영상,Json  ) =>byte로 표현할수있는 모든데이터
