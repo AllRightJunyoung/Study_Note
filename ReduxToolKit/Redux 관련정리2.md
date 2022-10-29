@@ -65,7 +65,7 @@
   }
 ~~~
 
-> 리듀서는 동기적으로 처리가된다
+> 리덕스는 동기적으로 처리가된다
 
 > 비동기적인 작업은 미들웨어에서 처리를 하게된다.
 
@@ -125,14 +125,18 @@ export default function applyMiddleware(
         )
       }
 
-      // 원본스토어의 getState값과 dispatch를 두번 사용하는것을 볼수있음
-      // 즉 store의 reducer에 도달하기전에 원본 스토어의 state값에 대한 작업을 미들웨어에서 수행 한뒤 dispatch를 한번 더 해서 reducer에서 미들웨어에서 수행된 작업을 받을수있음. 
+      
+      // getState store 상태접근 , dispatch
       const middlewareAPI: MiddlewareAPI = {
         getState: store.getState,
         dispatch: (action, ...args) => dispatch(action, ...args)
       }
+      // 모든 미들웨어 들을 순회하면서 middlewareAPI호출 
       const chain = middlewares.map(middleware => middleware(middlewareAPI))
+      // compose를 통해 여러 미들웨어를 하나의 중첩된 함수로 묶음
       dispatch = compose<typeof dispatch>(...chain)(store.dispatch)
+
+      // 이 dispatch를 호출하면 중첩된 미들웨어가 실행된뒤에 reducer로 값 전달
 
       return {
         ...store,
@@ -148,9 +152,8 @@ export default function applyMiddleware(
 2. 리덕스는 상태를 순수함수를 통해 변화시킨다 (순수함수는 외부에 영향을 안끼치는함수 )
 3. 리덕스는 1.action Dispatch 2. Reducer(current,action) 3. Reducer에서 nextState=>currentState로저장 4. listeners 호출로 등록되어있는 listner에게 알린다 (렌더링이 트리거되기전에)
 4. 리덕스는 동기적인 흐름으로 실행이된다. 비동기적인 처리는 미들웨어가있어서 가능하다
-5. 미들웨어에서는 원본스토어의 getState값과 dispatch를 두번 사용하는것을 볼수있다
-
-- 즉 store의 reducer에 도달하기전에 원본 스토어의 state값에 대한 작업을 미들웨어에서 작업을 수행한뒤 dispatch를 한번 더해서 reducer는 미들웨어에서 수행된작업을 받을수있다.
+5. 미들웨어는 Reducer에 도달하기전 store.dispatch 실행전의 상태를 가지고 비동기 처리를 진행할수있음
+- 즉 미들웨어들의 실행후에 dispatch를 하여 reducer에 전달한다 
   
 # 참고
 

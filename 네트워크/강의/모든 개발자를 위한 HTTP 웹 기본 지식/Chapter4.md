@@ -95,3 +95,5 @@
 5. 회원 수정 폼 : /members/id/edit ->GET
 6. 회원 수정 : /members/id/edit , /member/id -> POST
 7. 회원 삭제 : /members/id/delete -> POST
+
+> 컨트롤 URI로 동사로 된 리소스 경로를 사용하자 /new , /edit /delete , HTTP 메소드로 해결하기 애매한 경우 사용
