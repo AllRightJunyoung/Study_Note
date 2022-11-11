@@ -29,7 +29,7 @@
 - Component단위로 State를 설계하지말고 DataType 기반으로 State를 구성해라
   - auth,posts,users, ui (correct) , loginScreen,userList,postList (bad )
 
-- 하나의 큰 useSelector를 호출하는것보다 useSelector를 여러번 호출해서 더적은양의 데이터를 불러오는것을 선호한다. (응집도 고려?)
+- 하나의 큰 useSelector를 호출하는것보다 useSelector를 여러번 호출해서 더적은양의 데이터를 불러오는것을 선호한다. (결합도를 낮추고 응집도를 고려하라는거같음)
 
 - typescript를 사용하는것을 추천 
 
@@ -39,6 +39,7 @@
 - Plain Object를 사용해라 
 
 
+## 우선순위 c (권고 사항)
 
 
 
