@@ -32,4 +32,4 @@ console.log(typeof b) //undefined
 ## typeof의 활용 
 1. 애플리케이션 코드에서 ReferenceError가 나지 않게 하기위해 typeof를 명시해서 사용
   - 개발자가 실수로 변수를 명시 하지않았을떄 주로 활용 된다.
-
+> 즉 명시하지 않은 변수와 값이 없는 변수를 처리하기가 매우 편해짐
