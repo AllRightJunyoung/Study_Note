@@ -15,7 +15,7 @@
 4. forwardref메소드로 dom 접근을 쉽게 할수있게 되었다.
 5. createPortal로 컴포넌트를 dom에 주입할수있어 모달창이나 팝업창을 쉽게 만들수있게됨
 6. 클라이언트에서 서버 사이드렌더링시 ReactDom.hydrate를 사용할수있게됨
-7. hook 도입
+7. hook 도입 (주요)
 
 
 ## React 16버전 fiber 도입
