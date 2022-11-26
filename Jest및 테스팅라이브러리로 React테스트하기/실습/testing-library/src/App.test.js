@@ -1,5 +1,5 @@
 import { render, screen,fireEvent } from '@testing-library/react';
-import App from './App';
+import App, { replaceCameWithSpaces } from './App';
 
 // test('버튼 테스트', () => {
 //   render(<App/>)
@@ -31,15 +31,25 @@ import App from './App';
 
 // })
 
-// 체크 박스를 눌렀을떄  버튼은 비활성화 되어있다.
-test('checkbox',()=>{
-  render(<App/>)
-  const checkbox=screen.getByRole('checkbox') 
-  const button=screen.getByRole('button',{name:'button'})
-
-  fireEvent.click(checkbox)
-  expect(button).toBeDisabled()
-  fireEvent.click(checkbox)
-  expect(button).toBeEnabled()
+// // 버튼이 비활성일떄 gray색깔 , 활성화될떄 red색깔
+// test('checkbox',()=>{
+//   render(<App/>)
+//   const checkbox=screen.getByRole('checkbox') 
+//   const button=screen.getByRole('button',{name:'button'})
+// //  버튼이 비활성일떄
+//   fireEvent.click(checkbox)
+//   expect(button).toHaveStyle({backgroundColor:'gray'})
+//   // 버튼이 활성화될떄
+//   fireEvent.click(checkbox)
+//   expect(button).toHaveStyle({backgroundColor:'red'})
  
+// })
+
+describe('spaces before camel-case capital letters',()=>{
+  test('Works for no inner capital letters',()=>{
+    expect(replaceCameWithSpaces('Red')).toBe('Red')
+  });
+  test('Works for one inner capital letters',()=>{
+    expect(replaceCameWithSpaces('Blue')).toBe('Blue')
+  })
 })
