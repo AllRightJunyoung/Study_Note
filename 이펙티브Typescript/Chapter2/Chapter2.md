@@ -1,0 +1,146 @@
+# 타입 시스템
+
+## 아이템 6
+
+- 타입을 지정하지 않아도 변수와 함수의 타입을 추론할수있다,
+  - vscode 상에서
+- Vscode Go to Definction을 통해 정확한 타입을 볼수있다.
+- 타입 선언파일을 봐서 타입스크립트에 타입을 잘 지정해라
+
+## 아이템 7
+
+- 타입을 값들의 집합으로 봐라
+- 엄격한 상속관계가아니라 겹치지는 집합으로 생각해라 (벤다이어그램))
+
+```ts
+type A = "A";
+type AB = "A" | "B"; //유니온 두개이상의 타입이 들어올떄 사용
+
+interface Person {
+  name: string;
+}
+interface Lifespan {
+  birth: Date;
+  death?: Date;
+}
+type PersonSpan = Person & LifeSpan;
+// 인터섹션 교집합을 뜻함 => Perosn과 LifeSpan 둘다 가지는 값
+
+const ps: Person = {
+  // 정상
+  name: "Alan Turing",
+  birth: new Date("1912/06/23"),
+  death: new Date("1954/06/07"),
+};
+```
+
+# 아이템 8 타입공간과 값 공간의 심벌 구분하기
+
+- 타입관점에서 typeof는 값을 읽어서 타입스크립트 타입을 반환
+- 값의 관점에서 typeof는 자바스크립트 런타임의 typeof 연산자
+
+# 아이템 9 : 타입 단언보다는 타입 선언 사용하기
+
+```ts
+interface Person {
+  name: string;
+}
+const alice: Person = { name: "Alice" }; //타입선언
+const bob = { name: "Bob" } as Person; //타입 단언
+```
+
+- 타입 선언은 할당되는 값이 해당 인터페이스를 만족하는지 검사
+- 타입단언은 개발자가 타입을 강제로 지정 (타입체커는 에러감지 불가)
+
+## 타입 단언이 필요한 예시
+
+- 타입스크립트는 DOM에 접근할수 없기떄문에 엘리먼트를 알지못해서 DOM타입에대해서는 타입단언문을 사용한다.
+
+# 아이템 10 : 객체 래퍼 타입 피하기
+
+- 타입스크립트는 기본형과 객체 패러타입을 별도로 모델링한다
+  - string (String) , number (Number) , boolean (Boolean), symbol (Symbol) , bigint(BigInt)
+
+# 아이템 11 : 잉여 속성 체크의 한계 인지하기
+
+## 잉여 속성 체크
+
+- 타입시스템의 구조적 본질을 해치지 않으면서 객체 리터럴에 알수없는 속성을 허용하지않음 (엄격한 객체 리터럴 체크)
+  - But document나 new HTMLAnchorElement는 잉여속성체크가 되지않음
+  - 임시변수를 도입해도 잉여 속성체크를 건너뛸수있음
+
+```ts
+interface Room {
+  numDoors: number;
+  ceilingHeightFt: number;
+}
+const r: Room = {
+  numDoors: 1,
+  ceilingHeightFt: 10,
+  elephant: "present", // 객체 리터럴에 알수없는 속성 허용 x
+};
+
+//잉여속성체크 안함
+const obj2 = {
+  numDoors: 1,
+  ceilingHeightFt: 10,
+  elephant: "present",
+};
+
+const r: Room = obj2; //obj2 타입은 RooM에 맞지않으나 부분집합을 포함하므로 타입체커도 통과한다
+```
+
+# 아이템 12 : 함수 표현식에 타입스크립트 적용하기
+
+- 타입스크립트에서는 함수 표현식을 사용하는게 좋다
+  1. 함수의 매개변수부터 반환값까지 전체를 함수타입으로 선언하면 함수 표현식에 재사용할수있는 장점을 가짐
+  2. 함수 표현식을 사용하면 parameter에 대해 타입추론을할수있게도와준다.
+  - 매개변수나 반환값에 타입을 명시하기보다는 함수 표현식 전체에 타입구문을 적용해라
+    - typeof fn을 통해 다른함수의 시그니처를 참조할수있음 (fetch함수)
+
+```ts
+// 함수 표현식을 재사용
+type BinaryFn = (a: number, b: number) => number;
+const add: BinaryFn = (a, b) => a + b;
+const sub: BinaryFn = (a, b) => a - b;
+const mul: BinaryFn = (a, b) => a * b;
+
+// 타입추론 예시
+const checkedFetch: typeof fetch = async (input, init) => {
+  const response = await fetch(input, init);
+  if (!response.ok) {
+    throw new Error("Request failed " + response.status);
+  }
+  return response;
+};
+```
+
+# 아이템 13 : 타입과 인터페이스의 차이점 알기
+
+- 대부분의 경우에는 타입과 인터페이스를 사용해도된다 (공통)
+
+  1. 인덱스 시그니처도 둘다 사용가능
+  2. 함수타입도 둘다가능
+  3. 제네릭도 둘다가능
+  4. 둘다 타입 확장가능 하지만 인터페이스는 복잡한 타입을 확장하기 힘듬
+
+- 차이점
+
+```ts
+// 1. 유니온타입에 name속성 확장하는 예시 (인터페이스는 불가능함)
+type NameVariable = (Input | Output) & { name: string };
+
+// 2. 인터페이스는 선언병합이가능하다.
+interface Istate {
+  name: string;
+  capital: string;
+}
+interface Istate {
+  population: number;
+}
+const wyoming: Istate = {
+  name: "Wyoming",
+  capital: "Cheyenne",
+  population: 500_000,
+}; //정상
+```
