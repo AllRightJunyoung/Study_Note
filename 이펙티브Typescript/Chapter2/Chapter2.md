@@ -130,7 +130,7 @@ const checkedFetch: typeof fetch = async (input, init) => {
 // 1. 유니온타입에 name속성 확장하는 예시 (인터페이스는 불가능함)
 type NameVariable = (Input | Output) & { name: string };
 
-// 2. 인터페이스는 선언병합이가능하다.
+// 2. 인터페이스는 선언병합이가능하다. 타입은 불가능하다 (하지만 잘못된설계방식이라 비추)
 interface Istate {
   name: string;
   capital: string;
@@ -143,4 +143,67 @@ const wyoming: Istate = {
   capital: "Cheyenne",
   population: 500_000,
 }; //정상
+```
+
+결론
+
+1. 복잡한 타입일경우에는 타입 확장 자유도가 높은 타입별칭을 사용 (주요)
+2. 간단한 객체 타입일경우에는 일관성과 보강의 관점에서 생각해바야한다
+
+- 인터페이스만 사용하던가 , 타입만사용하던가
+
+# 아이템 14 : 타입 연산과 제네릭 사용으로 반복 줄이기
+
+```ts
+1. 타입에 중복을 붙여 반복을 줄이자
+function distance(a: { x: number; y: number }, b: { x: number; y: number }) {
+  return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+}
+interface Point2D {
+  x: number;
+  y: number;
+}
+function distance(a: Point2D, b: Point2D);
+
+2. 인터페이스나 타입별칭으로 확장시키기
+interface Person {
+  firstName: string;
+  lastName: string;
+}
+interface PersonWithBirthDate extends Person {
+  birth: Date;
+}
+type PersonWithBirthDate = Person & { birth: Date };
+
+
+3. Mapped 타입 사용
+
+interface State {
+  userId: string;
+  pageTitle: string;
+  recentFiles: string[];
+  pageContents: string;
+}
+
+type TopNavState = {
+  [k in "userId" | "pageTitle" | "recentFiles"]: State[k];
+};
+// => pick으로 대체가능
+type TopNavState =Pick<State,'userId' | 'pageTitle' | 'recentFiles'>
+type TopNavKeys=keyof State
+
+const INIT_OPTIONS = {
+  width: 640,
+  height: 480,
+  colors: "#00FF00",
+  label: "VGA",
+};
+// interface Options {
+//   width: number;
+//   height: number;
+//   color: string;
+//   label: string;
+// }
+type Options = typeof INIT_OPTIONS;
+
 ```
