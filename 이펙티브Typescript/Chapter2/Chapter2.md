@@ -207,3 +207,96 @@ const INIT_OPTIONS = {
 type Options = typeof INIT_OPTIONS;
 
 ```
+
+# 아이템 15 : 동적 데이터에 인덱스 시그니처 사용하기
+
+```ts
+
+
+type Rocket = { [property: string]: string };
+const rocket: Rocket = {
+  name: "Falcon 9",
+  variant: "v1.0",
+  thrust: "4,940 kN",
+};
+
+키의이름 : property
+키타입 :string
+값 타입 : string
+
+```
+
+## 인덱스 시그니처 단점
+
+> 안전하게사용하기위해선 undefined를 추가해야됨 조건문에
+
+1. 잘못된 키를 포함해 모든키 허용
+2. 특정키가 필요하지않음
+3. 키마다 다른타입을 가질수없음
+4. 자동완성기능 제대로동작x
+
+## 인덱스 시그니처를 대안할수있는방법
+
+```ts
+1. Record를 사용하는 방법
+type Vec3D=Record<'x'|'y'|'z',number>
+
+Type Vec3D{
+  x:number;
+  y:number;
+  z:number;
+}
+
+2. 매핑된 타입을 사용
+type Vec3D={[k in 'x' | 'y' | 'z']:number}
+
+
+```
+
+## item 16 number 인덱스 시그니처보다는 Array, 튜플,ArrayLike 사용
+
+- 자바스크립트에서는 배열 인덱스들이 문자열로 변환되어 사용이되어 문자열로 접근이 가능하다
+  - 타입스크립트는 이러한 혼란을 바로잡기 위해 숫자 키와 문자열 키를 다른것으로 인식
+- for-in 루프는 key를 string으로 받고 성능이 느려 배열 순회시 사용 비추
+- 인덱스 시그니처에 number를 사용하기보단 Array나 튜플 ArrayLike를 사용해라
+
+## item 17 변경 관련된 오류 방지를 위해 readonly를 사용해라
+
+> 매개변수로 참조형데이터를 받게되면 내부에서 변경될 우려가존재
+
+- 매개변수를 readonly로 선언할시 다음과 같은일 발생
+  - 타입스크립트가 매개변수가 함수내에서 변경되는지 체크
+  - 함수를 호출하는쪽에서는 함수가 매개변수를 변경하지 않는다는 보장을 받음
+  - 호출하는 쪽도 readonly 배열을 매개변수로 넣을수있음
+
+1. readonly의 단점
+
+- 중첩객체에서는 readonly가 제대로 동작않어 깊은 readonly타입을 사용해야한다 (ts-essentials에 있는 DeepReadonly)
+
+## item 18 매핑된 타입을 사용하여 값을 동기화하기
+
+- 매핑된 타입을 쓰게되면 타입스크립트가 코드에 제약을 강제하도록 할수있음
+- 매핑된 타입은 한 객체가 또 다른객체와 정확히 같은속성을 가지게 할떄이상적
+
+코드예시
+
+```ts
+interface ScatterProps {
+  xs: number[];
+  ys: number[];
+
+  xRange: [number, number];
+  yRange: [number, number];
+  color: string;
+
+  onClick: (x: number, y: number, index: number) => void;
+}
+const REQUIRES_UPDATE: { [k in keyof ScatterProps]: boolean } = {
+  xs: true,
+  ys: true,
+  xRange: true,
+  yRange: true,
+  color: true,
+  onClick: false,
+};
+```
