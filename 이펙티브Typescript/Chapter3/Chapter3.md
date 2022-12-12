@@ -190,3 +190,50 @@ const pharaoh = {
   ...(hasDates ? { start: -2589, end: -2566 } : {}),
 }; //nameTitle + 스프레드 한 데이터 타입추론됨
 ```
+
+## 아이템 24 일관성있는 별칭 사용하기
+
+- 별칭 예시
+
+```ts
+const borough = { name: "Brooklyn", location: [40.688, -73.979] };
+const loc = borough.location; // 별칭
+```
+
+> 별칭을 남발해서 사용하면 제어 흐름 분석이 매우 어렵다
+
+- 일관성있는 별칭 사용
+
+```ts
+interface Coordinate {
+  x: number;
+  y: number;
+}
+interface BoundingBox {
+  x: [number, number];
+  y: [number, number];
+}
+interface Polygon {
+  exterior: Coordinate[];
+  holes: Coordinate[];
+  bbox?: BoundingBox;
+}
+
+function isPointInPolygon(polygon: Polygon, pt: Coordinate) {
+  const { bbox } = polygon; // 별칭
+  if (bbox) {
+    const { x, y } = bbox;
+    if (pt.x < x[0] || pt.x > x[1] || pt.y < y[0] || pt.y > y[1]) {
+      return false;
+    }
+  }
+}
+```
+
+- 별칭 단점
+
+1. 해당 별칭에대한 함수를 호출했을때 별칭을 제거할가능성이있다 (타입스크립트는 함수가 타입 정제를 무효화하지 않는다고 가정한다.)
+2. 타입스크립트가 타입을 좁히는것을 방해하여 변수에 별칭을 사용할떈 일관되게 사용하는것을 추천
+
+- 비구조화 문법 사용
+- 속성보다 지역변수를 사용해라
