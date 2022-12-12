@@ -237,3 +237,60 @@ function isPointInPolygon(polygon: Polygon, pt: Coordinate) {
 
 - 비구조화 문법 사용
 - 속성보다 지역변수를 사용해라
+
+## item 25 : 비동기 코드에는 콜백대신 async 함수 사용하기
+
+- 콜백보다는 프로미스를 사용하는게 코드작성과 타입추론면에서 좋음
+- 프로미스를 생성하기보다 async await사용 하는것이 좋다
+- 어떤함수가 프로미스를 반환하면 async로 선언해라
+
+## item 26: 타입 추론에 문맥이 어떻게 사용되는지 이해하기
+
+- 문자열 사용시 주의해야할점
+
+```ts
+type Language = "JavaScript" | "TypeScript" | "Python";
+function setLanguage(Language: Language) {}
+let language = "JavaScript";
+setLanguage(language); // 할당시점에 값을 추론 const로선언하면 에러발생x
+```
+
+- 튜플 사용시 주의해야할점
+
+```ts
+function panTo(where: [number, number]) {}
+// panTo([10, 20]); //정상
+const loc = [10, 20];
+panTo(loc); //에러발생 number[]로추론
+
+// 아래와 같이 수정하면 에러 발생 사라짐
+const loc: [number, number] = [10, 20];
+
+function panTo(where: readonly [number, number]) {}
+// panTo([10, 20]); //정상
+const loc = [10, 20] as const; //상수단언으로 해결
+
+panTo(loc);
+```
+
+- 객체 사용시 주의할점
+
+```ts
+type Language = "JavaScript" | "TypeScript" | "Python";
+
+interface GovernedLanguage {
+  language: Language;
+  organization: string;
+}
+function complain(language: GovernedLanguage) {}
+complain({ language: "TypeScript", organization: "Microsoft" }); //정상
+
+const ts = {
+  language: "TypeScript",
+  organization: "Microsoft",
+};
+complain(ts); // 에러발생 =>language타입은 string으로 추론 , as const로해결가능
+```
+
+- 타입추론은 문맥에서도 어떻게 쓰이는지 살펴봐야한다.
+- 변수를 뽑아서 별도로 선언했을경우 오류가 발생하면 타입을 선언 or as const사용
