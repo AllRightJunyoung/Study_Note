@@ -14,6 +14,8 @@ import Options from "../Options";
 test("displays image for each scoop option from server", async () => {
   render(<Options optionType="scoops" />);
   // find images
+
+  // msw로부터 데이터를 받아오기때문에 await사용
   const scoopImages = await screen.findAllByRole("img", { name: /scoop$/i });
   expect(scoopImages).toHaveLength(2);
 

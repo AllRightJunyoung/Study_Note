@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '../../../test-utiles/testing-library-utils.jsx';
 
 import Options from '../Options';
 
