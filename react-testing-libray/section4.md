@@ -1,3 +1,5 @@
+- 체크 박스 테스팅
+
 # 실습
 
 ```jsx
@@ -48,6 +50,8 @@ test("체크 박스를 클릭하면 버튼 enable, 체크박스를 다시클릭�
 
   - 스크린(Dom)에 있는 구성요소를 가져올수있음
   - docs : https://testing-library.com/docs/queries/about/#screen
+  - Single Element (getBy, queryBy , findBy)
+  - Multiple Elements (getAllBy, queryAllBy , findAllby)
 
 - expect().not.toBeInTheDocument()
   - 문서에 있는지 없는지 확인

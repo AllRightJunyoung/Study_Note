@@ -3,9 +3,13 @@
 - 쉽게 말하면 가짜 서버
 - 요청이 서버에 전달되지않고 MSW에 요청이감
 
+## 서버로부터 오는 데이터를 처리 하고싶다?
+- async await와 findAllByRole을 사용
+
 ## 실습
 
 > 서버로부터 가져온 데이터가 올바르게 렌더링됬는지
+- async await 를 사용하여 서버로부터 오는 데이터를 가져옴
 
 ```jsx
 import { render, screen } from "@testing-library/react";
