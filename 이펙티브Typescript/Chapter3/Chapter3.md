@@ -285,7 +285,7 @@ interface GovernedLanguage {
 function complain(language: GovernedLanguage) {}
 complain({ language: "TypeScript", organization: "Microsoft" }); //정상
 
-const ts = {
+const ts = { //변수를 뽑아서 별도로 사용
   language: "TypeScript",
   organization: "Microsoft",
 };
