@@ -1,3 +1,9 @@
+# find 쿼리
+- 서버로부터 데이터를 요청해서 가져오는 dom요소일경우 사용 (현재 dom요소에 없는경우)
+
+- 실습 1 
+
+~~~js
 import { render, screen } from "@testing-library/react";
 import App from "../App";
 import userEvent from "@testing-library/user-event";
@@ -98,31 +104,68 @@ test("Order phases for happy path", async () => {
   await screen.findByRole("checkbox", { name: "Cherries" });
 });
 
-test("Toppings header is not on summary page if no toppings ordered", async () => {
-  const user = userEvent.setup();
-  // render app
-  render(<App />);
 
-  // add ice cream scoops but no toppings
+
+~~~
+
+- 실습 2
+
+~~~ js
+
+// 스쿱이 없을경우 order버튼은 disabled되어야한다.
+test("disable order button if there are no scoops ordered", async () => {
+  const user = userEvent.setup();
+  render(<OrderEntry setOrderPhase={jest.fn()} />);
+
+  // order button should be disabled at first, even before options load
+  const orderButton = screen.getByRole("button", { name: /order sundae/i });
+  expect(orderButton).toBeDisabled();
+
+  // expect button to be enabled after adding scoop
   const vanillaInput = await screen.findByRole("spinbutton", {
     name: "Vanilla",
   });
   await user.clear(vanillaInput);
   await user.type(vanillaInput, "1");
+  expect(orderButton).toBeEnabled();
 
-  const chocolateInput = screen.getByRole("spinbutton", { name: "Chocolate" });
-  await user.clear(chocolateInput);
-  await user.type(chocolateInput, "2");
-
-  // find and click order summary button
-  const orderSummaryButton = screen.getByRole("button", {
-    name: /order sundae/i,
-  });
-  await user.click(orderSummaryButton);
-
-  const scoopsHeading = screen.getByRole("heading", { name: "Scoops: $6.00" });
-  expect(scoopsHeading).toBeInTheDocument();
-
-  const toppingsHeading = screen.queryByRole("heading", { name: /toppings/i });
-  expect(toppingsHeading).not.toBeInTheDocument();
+  // expect button to be disabled again after removing scoop
+  await user.clear(vanillaInput);
+  await user.type(vanillaInput, "0");
+  expect(orderButton).toBeDisabled();
 });
+
+~~~
+
+~~~js
+
+test("indicate if scoop count is non-int or out of range", async () => {
+  const user = userEvent.setup();
+  render(<ScoopOption />);
+
+  // expect input to be invalid with negative number
+  const vanillaInput = screen.getByRole("spinbutton");
+  await user.clear(vanillaInput);
+  await user.type(vanillaInput, "-1");
+  expect(vanillaInput).toHaveClass("is-invalid");
+
+  // replace with decimal input
+  await user.clear(vanillaInput);
+  await user.type(vanillaInput, "2.5");
+  expect(vanillaInput).toHaveClass("is-invalid");
+
+  // replace with input that's too high
+  await user.clear(vanillaInput);
+  await user.type(vanillaInput, "11");
+  expect(vanillaInput).toHaveClass("is-invalid");
+
+  // replace with valid input
+  // note: here we're testing our validation rules (namely that the input can display as valid)
+  // and not react-bootstrap's response
+  await user.clear(vanillaInput);
+  await user.type(vanillaInput, "3");
+  expect(vanillaInput).not.toHaveClass("is-invalid");
+});
+
+
+~~~

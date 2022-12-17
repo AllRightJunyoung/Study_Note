@@ -4,7 +4,7 @@
 - 요청이 서버에 전달되지않고 MSW에 요청이감
 
 ## 서버로부터 오는 데이터를 처리 하고싶다?
-- async await와 findAllByRole을 사용
+- async await와 findAllByRole을 사용 (find 쿼리사용)
 
 ## 실습
 

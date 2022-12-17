@@ -233,4 +233,7 @@ expect(window.fetch).toHaveBeenCalledTimes(1);
 
 11. get * 변형을 단언문 처럼 사용하기
 ~~~js
+
+
+
 ~~~
