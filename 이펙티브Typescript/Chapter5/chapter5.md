@@ -112,10 +112,14 @@ else{
 # 몽키패치를 안전하게 사용하는 예시 
 
 구체적인 타입 단언문 사용하기 (추천)
-1. 타입을 확장하기 때문에 Document 타입을 건드리지 않고 별도의 새로운 타입을 도입하며 모듈의 영역문제도 해결할수있음
+1. 타입을 확장하기 때문에 Document 타입을 건드리지 않고 별도의 새로운 타입을 도입하여 모듈의 영역문제도 해결할수있음 (import 하는 부분에서만 해당됨)
 ~~~ ts
 interface MonkeyDocument extends Document{
     monkey :string;
 }
 (document as MonkeyDocument).monkey="DFDSF"
 ~~~
+# item 44 타입커버리지를 추적하여 타입 안정성 유지하기
+- npx type-coverage --detail을통해 프로젝트 내에 있는 any타입이 있는곳을 모두 출력해준다.
+  - any의 사용을 줄이자 
+- noImplicitAny가 설정되어 있어도 명시적 any와 서드파티 타입 선언 @types을 통해 any 타입은 코드내에 여전히 존재할수있다
