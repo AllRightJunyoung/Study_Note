@@ -23,4 +23,54 @@
 1. 데이터가 자주 바뀐다 (주식 데이터)
 2. 특정유저에게 한정된 데이터
 3. 다양한데이터가 한번에 오는경우
-> 클라이언트 사이드에서 데이터페칭을 하는것이 좋다
+> 클라이언트 사이드에서 데이터페칭을 하는것이 좋다 (React 측에서)
+
+## 클라이언트 사이드에서 데이터페칭 하는 방법
+1.useEffect 사용
+- 복잡해져서 비추함
+
+~~~ tsx
+useEffect(() => {
+    setIsLoading(true);
+    fetch("https://hisdf-3d150-default-rtdb.firebaseio.com/sales.json")
+      .then((response) => response.json())
+      .then((data) => {
+        const transformSales = [];
+        for (const key in data) {
+          transformSales.push({
+            id: key,
+            username: data[key].username,
+            volume: data[key].volume,
+          });
+        }
+        setSales(transformSales);
+        setIsLoading(false);
+      });
+  }, []);
+~~~
+
+2. SWR 사용 (추천)
+- 데이터 캐싱과 , 최신 데이터를 제공하기위한 데이터 유효성 재검사를 제공
+- 코드로직이 간편해짐 (매우큰 장점)
+- 단점 : 클라이언트 사이드에서 서버로부터 요청해서 데이터를 가져오는것이므로 pre-rendering 문제가발생
+  - SWR과 getStaticProps를 같이써서 preRendering과 실시간 데이터반영을 할수있음
+
+~~~ ts
+  const { data, error } = useSWR(
+    "https://hisdf-3d150-default-rtdb.firebaseio.com/sales.json"
+  );
+
+  useEffect(() => {
+    if (data) {
+      const transformSales = [];
+      for (const key in data) {
+        transformSales.push({
+          id: key,
+          username: data[key].username,
+          volume: data[key].volume,
+        });
+      }
+      setSales(transformSales);
+    }
+  }, [data]);
+~~~
