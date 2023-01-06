@@ -118,6 +118,7 @@ const bob = { name: "Bob" } as Person; //타입 단언
 
 - 타입 선언은 할당되는 값이 해당 인터페이스를 만족하는지 검사한다 (추천)
 - 타입 단언은 개발자가 타입을 강제로 지정 (타입체커는 에러감지 불가) (비추천)
+  - 타입스크립트보다 내가타입을 더 잘알다싶으면 사용
 
 ## 타입 단언이 필요한 예시
 
@@ -125,8 +126,14 @@ const bob = { name: "Bob" } as Person; //타입 단언
 
 # 아이템 10 : 객체 래퍼 타입 피하기
 
-- 타입스크립트는 기본형과 객체 패러타입을 별도로 모델링한다
+- 타입스크립트는 기본형과 객체 래퍼 타입을 별도로 모델링한다
+
+- 객체 래퍼타입이란?
+  - 기본형의 변수가 메소드를 사용할수있해준다. (기본형->객체래퍼타입->기본형) 
   - string (String) , number (Number) , boolean (Boolean), symbol (Symbol) , bigint(BigInt)
+    - 괄호는 래퍼타입
+> 타입스크립트는 객체 래퍼타입을 타입으로 쓰는것을 지양하고 기본형타입을 사용해야한다.  
+
 
 # 아이템 11 : 잉여 속성 체크의 한계 인지하기
 
@@ -141,38 +148,59 @@ interface Room {
   numDoors: number;
   ceilingHeightFt: number;
 }
+// 좋은 예시 : 객체 리터럴에 알수없는 속성 허용 x
 const r: Room = {
   numDoors: 1,
   ceilingHeightFt: 10,
-  elephant: "present", // 객체 리터럴에 알수없는 속성 허용 x
+  elephant: "present", // 
 };
 
-//잉여속성체크 안함
+//  나쁜예시
 const obj2 = {
   numDoors: 1,
   ceilingHeightFt: 10,
   elephant: "present",
 };
+const r: Room = obj2; //obj2 타입은 RooM에 맞지않으나 부분집합을 포함하므로 타입체커도 통과한다 //잉여속성체크 안함
 
-const r: Room = obj2; //obj2 타입은 RooM에 맞지않으나 부분집합을 포함하므로 타입체커도 통과한다
+interface Options{
+  title:string;
+  darkMode?:booelan;
+}
+// 좋은예시
+
+const o:Options={darkmode:true,title:'Ski Free'}
+
+// 나쁜예시 (감지못함)
+// 2번째줄이 객체리터럴이 아니기떄문에
+const intermediate={darkmode:true,title:'Ski Free'}
+const o:Options=intermediate
+
+const o ={darkmode:true,title:'Ski Free'} as Options; // 타입단언 비추천
+
 ```
 
 # 아이템 12 : 함수 표현식에 타입스크립트 적용하기
-
-- 타입스크립트에서는 함수 표현식을 사용하는게 좋다
-  1. 함수의 매개변수부터 반환값까지 전체를 함수타입으로 선언하면 함수 표현식에 재사용할수있는 장점을 가짐
-  2. 함수 표현식을 사용하면 parameter에 대해 타입추론을할수있게도와준다.
+> 타입스크립트에서는 함수의 매개변수에 타입선언을 하는것보다 함수표현식 전체타입에 정의하는것이 코드도 간결해지고 안전해진다.
+1. 타입스크립트에서는 함수 표현식을 사용하는게 좋다
+  - 함수의 매개변수부터 반환값까지 전체를 함수타입으로 선언하면 함수 표현식에 재사용할수있는 장점을 가짐
+  - 함수 표현식을 사용하면 parameter에 대해 타입추론을할수있게도와준다.
   - 매개변수나 반환값에 타입을 명시하기보다는 함수 표현식 전체에 타입구문을 적용해라
     - typeof fn을 통해 다른함수의 시그니처를 참조할수있음 (fetch함수)
+2. 타입 시그니처를 반복적으로 작성한 코드가 있다면 함수타입을 분리하거나 , 라이브러리내에서 타입을 찾는다.
 
 ```ts
-// 함수 표현식을 재사용
-type BinaryFn = (a: number, b: number) => number;
-const add: BinaryFn = (a, b) => a + b;
-const sub: BinaryFn = (a, b) => a - b;
-const mul: BinaryFn = (a, b) => a * b;
 
-// 타입추론 예시
+1번 예시
+async function checkedFetch(input:RequestInfo,init?:RequestInit){
+  const response=await fetch(input,init)
+  if(!response.ok){
+    throw new Error('Request failed: ' + response.status)
+  }
+  return response;
+}
+
+// typeof fn 사용하는 예시  (아래와같이 함수표현식으로 사용하는게 좋음)
 const checkedFetch: typeof fetch = async (input, init) => {
   const response = await fetch(input, init);
   if (!response.ok) {
@@ -180,6 +208,13 @@ const checkedFetch: typeof fetch = async (input, init) => {
   }
   return response;
 };
+
+// 2번 예시 : 함수 표현식을 재사용
+type BinaryFn = (a: number, b: number) => number;
+const add: BinaryFn = (a, b) => a + b;
+const sub: BinaryFn = (a, b) => a - b;
+const mul: BinaryFn = (a, b) => a * b;
+
 ```
 
 # 아이템 13 : 타입과 인터페이스의 차이점 알기
@@ -194,6 +229,13 @@ const checkedFetch: typeof fetch = async (input, init) => {
 - 차이점
 
 ```ts
+// 타입 확장 
+// 인터페이스와 타입 예시
+interface IStateWithPop extends Tstate{
+  population:number;
+}
+type TStateWithPop=Istate & {population:number}
+
 // 1. 유니온타입에 name속성 확장하는 예시 (인터페이스는 불가능함)
 type NameVariable = (Input | Output) & { name: string };
 
@@ -216,21 +258,29 @@ const wyoming: Istate = {
 
 1. 복잡한 타입일경우에는 타입 확장 자유도가 높은 타입별칭을 사용 (주요)
 2. 간단한 객체 타입일경우에는 일관성과 보강의 관점에서 생각해바야한다
-
-- 인터페이스만 사용하던가 , 타입만사용하던가
+3. 인터페이스만 사용하던가 , 타입만사용하던가
 
 # 아이템 14 : 타입 연산과 제네릭 사용으로 반복 줄이기
 
 ```ts
-1. 타입에 중복을 붙여 반복을 줄이자
-function distance(a: { x: number; y: number }, b: { x: number; y: number }) {
-  return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
-}
+1. 중복된 타입에 타입을 붙여 반복을 줄이자
 interface Point2D {
   x: number;
   y: number;
 }
+
 function distance(a: Point2D, b: Point2D);
+
+function distance(a: { x: number; y: number }, b: { x: number; y: number }) {
+  return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+}
+
+function get(url:string,opts:Options):Promise<Response>
+function post(url:string,opts:Options):Promise<Response>
+type HTTPFunction=(url:string,opts:Options)
+
+const get:HTTPFunction=(url,opt)=>{};
+const post:HTTPfunction=(url,opt)=>{};
 
 2. 인터페이스나 타입별칭으로 확장시키기
 interface Person {
@@ -244,14 +294,13 @@ type PersonWithBirthDate = Person & { birth: Date };
 
 
 3. Mapped 타입 사용
-
 interface State {
   userId: string;
   pageTitle: string;
   recentFiles: string[];
   pageContents: string;
 }
-
+// TopNavState를 State의 부분집합으로 
 type TopNavState = {
   [k in "userId" | "pageTitle" | "recentFiles"]: State[k];
 };
@@ -259,6 +308,7 @@ type TopNavState = {
 type TopNavState =Pick<State,'userId' | 'pageTitle' | 'recentFiles'>
 type TopNavKeys=keyof State
 
+4. 값으로 부터 타입 정의
 const INIT_OPTIONS = {
   width: 640,
   height: 480,
@@ -274,7 +324,23 @@ const INIT_OPTIONS = {
 type Options = typeof INIT_OPTIONS;
 
 ```
+~~~ ts
+5. 함수나 메소드의 반환값에 타입 정의
+function getUserInfo(userId:string){
+  return {
+    userId,
+    name,
+    age,
+    height,
+    weight,
+    favoriteColor
+  }
+}
+type UserInfo=ReturnType<typeof getUserInfo>
 
+6. 제네릭 관련내용 (타입스크립트 핸드북 다시보고 봐야할듯 p82~p84)
+
+~~~
 # 아이템 15 : 동적 데이터에 인덱스 시그니처 사용하기
 
 ```ts
@@ -317,8 +383,15 @@ Type Vec3D{
 2. 매핑된 타입을 사용
 type Vec3D={[k in 'x' | 'y' | 'z']:number}
 
+type Abc={[k in 'a' | 'b' | 'c']: k extends 'b' ? string:number}
+Type ABC={
+  a:number;
+  b:string;
+  c:number;
+}
 
 ```
+- 인덱스 시그니처는 동적데이터를 표현할떄 주로 사용 (CSV파일 )
 
 ## item 16 number 인덱스 시그니처보다는 Array, 튜플,ArrayLike 사용
 
