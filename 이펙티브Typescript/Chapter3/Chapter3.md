@@ -54,7 +54,8 @@ const elmo: Product = {
 ## 함수의 반환에서의 타입을 명시해서 오류를 잡아라
 - 반환 타입을 명시하면 함수에 대해 더 명확히 알수있다
 - 반환 타입을 명시하면 명명된 타입을 사용할수있다. (사용자가 더 직관적으로 알수있게됨)
-- 오류의 위치를 제대로 표시해준다.
+- 구현상의 오류의 위치를 제대로 표시해준다.
+
 ## 아이템 20 다른타입에는 다른 변수 사용하기
 
 > 자바스크립트에서는 하나의 변수를 다른 목적을 가지는 다른 타입으로 재사용이 가능하다 (숫자나 문자)
@@ -69,6 +70,7 @@ const elmo: Product = {
 
 - 타입스크립트는 타입을 추론할떄 명확성과 유연성 사이의 균형을 유지한다
 - let 키워드로 변수를 선언한다면 좀 더 넓은 타입으로 타입추론이된다.
+- const 키워드는 let과 다르게 더 좁은 타입으로 타입추론된다
 
 ## 타입 넓히기 예시
 
@@ -132,6 +134,7 @@ if (el) {
 } else {
   alert("sdfdsf");
 }
+2. instanceof 로 좁히기
 function contains(text: string, search: string | RegExp) {
   if (search instanceof RegExp) {
     return !!search.exec(text);
@@ -140,8 +143,7 @@ function contains(text: string, search: string | RegExp) {
 }
 ```
 
-2. 분기문을 사용해도 문제가 발생하는 경우
-
+3. 분기문을 사용해도 문제가 발생하는 경우
 ```ts
 const el = document.getElementById("foo");
 if (typeof el === "object") {
@@ -155,7 +157,7 @@ function foo(x?: number | string | null) {
 }
 ```
 
-3. 태그드 유니온을 사용하기
+4. 태그드 유니온을 사용하기
 
 ```ts
 interface UploadEvent {
@@ -180,7 +182,7 @@ function handleEvent(e: AppEvent) {
 }
 ```
 
-4. 타입가드로 배열과 객체의 타입을 좁히기
+5. 타입가드로 배열과 객체의 타입을 좁히기
 
 ```ts
 const jackson5 = ["Jackie", "Tito", "Jermaine", "Marlon", "Micheal"];
@@ -211,6 +213,7 @@ const pharaoh = {
   ...(hasDates ? { start: -2589, end: -2566 } : {}),
 }; //nameTitle + 스프레드 한 데이터 타입추론됨
 ```
+> 스프레드 오퍼레이터를 사용하면 타입스크립트는 새로운 타입 추론을 할수잇게한다.
 
 ## 아이템 24 일관성있는 별칭 사용하기
 
@@ -240,6 +243,23 @@ interface Polygon {
   bbox?: BoundingBox;
 }
 
+// 별칭의 문제점
+
+function isPointInPolygon(polygon: Polygon, pt: Coordinate) {
+  polygon.bbox // BoundingBox | undefiend
+  const box=polyogn.bbox
+  //  polygon.bbox // BoundingBox | undefiend
+  if (polyogn.bbox) { // polygon.bbox // BoundingBox
+     polygon.bbox // BoundingBox 
+     box //   BoundingBox | undefiend
+    if (pt.x < x[0] || pt.x > x[1] || pt.y < y[0] || pt.y > y[1]) {
+      return false;
+    }
+  }
+}
+
+// 올바른 별칭 사용예시
+
 function isPointInPolygon(polygon: Polygon, pt: Coordinate) {
   const { bbox } = polygon; // 별칭
   if (bbox) {
@@ -254,7 +274,7 @@ function isPointInPolygon(polygon: Polygon, pt: Coordinate) {
 - 별칭 단점
 
 1. 해당 별칭에대한 함수를 호출했을때 별칭을 제거할가능성이있다 (타입스크립트는 함수가 타입 정제를 무효화하지 않는다고 가정한다.)
-2. 타입스크립트가 타입을 좁히는것을 방해하여 변수에 별칭을 사용할떈 일관되게 사용하는것을 추천
+2. 별칭은 타입을 좁히는것을 방해하여 별칭을 사용할떈 일관되게 사용하는것을 추천
 
 - 비구조화 문법 사용
 - 속성보다 지역변수를 사용해라
