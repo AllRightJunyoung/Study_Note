@@ -61,3 +61,4 @@ export default MyDocument;
 - 이미지가 필요할때마다 최적화되어 생성, 필요할떄 이미지를 가져와서사용 
 - 이미지가 안보일떄 request시 lazy로딩을 하여 보일떄 가져옴
 - 기존의 css가 적용되면 기존의css를 반영한다.
+
