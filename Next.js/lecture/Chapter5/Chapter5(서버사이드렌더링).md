@@ -1,4 +1,4 @@
-# 정적 pre-rendring의 단점 (중요)
+# 정적(Static) pre-rendring의 단점 (중요)
 > getStaticProps , getStaticPaths 사용
 1. 들어오는 실제 요청에는 접근할수없음 (정해진 id의 기반으로 데이터를 내려줌)
    - 이러한 이유로 모든 URL에 대응되는것을 사전에 정의를 내려줄수밖에없음 (모든 요청을 다 처리하지 못함)

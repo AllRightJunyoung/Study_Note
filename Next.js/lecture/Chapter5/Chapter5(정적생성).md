@@ -27,7 +27,7 @@
 2. 배포한뒤 구축된 페이지는 서버나 앱을 실행시키는 CDN을 통해서 캐시로 저장된다
 
 
-## Next.js pre-Rendering 지정하는방법
+## Next.js 정적 pre-Rendering 지정하는방법
 페이지 컴포넌트 내부에 존재해야한다. (pages/component)
 비동기함수인 getStaticProps을 사용
   - 서버사이드에서만 실행되는 모든 코드 또한 실행가능 (클라이언트뿐만아니라)
