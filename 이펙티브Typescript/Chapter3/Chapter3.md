@@ -286,17 +286,19 @@ function isPointInPolygon(polygon: Polygon, pt: Coordinate) {
 - 어떤함수가 프로미스를 반환하면 async로 선언해라
 
 ## item 26: 타입 추론에 문맥이 어떻게 사용되는지 이해하기
-
+- 타입스크립트는 타입을 추론할떄 단순히 값만 고려하지 않고 문맥까지도 살핀다.
 - 문자열 사용시 주의해야할점
 
 ```ts
 type Language = "JavaScript" | "TypeScript" | "Python";
 function setLanguage(Language: Language) {}
 let language = "JavaScript";
-setLanguage(language); // 할당시점에 값을 추론 const로선언하면 에러발생x
+setLanguage(language); // 할당시점에 값을 추론하여 에러 발생
+//  const로선언하면 에러발생x
+//  할당시 :Language타입을 명시적선언
 ```
 
-- 튜플 사용시 주의해야할점
+1. 튜플 사용시 주의해야할점
 
 ```ts
 function panTo(where: [number, number]) {}
@@ -307,12 +309,16 @@ panTo(loc); //에러발생 number[]로추론
 // 아래와 같이 수정하면 에러 발생 사라짐
 const loc: [number, number] = [10, 20];
 
-function panTo(where: readonly [number, number]) {}
+function panTo(where:[number, number]) {}
 // panTo([10, 20]); //정상
-const loc = [10, 20] as const; //상수단언으로 해결
 
+// const는 얕은 상수인 반면 , as const는 deeply 상수이다
+const loc = [10, 20] as const; 
 panTo(loc);
+// readyonly [10,20] 형식은 panTo에 할당할수없다고 발생
 ```
+
+> as const는 문맥 손실문제와 관련한 문제를 깔끔히 해결 가능하지만 타입정의에 실수가있을떄 호출하는곳에서 발생하여 원인파악이어렵다.
 
 - 객체 사용시 주의할점
 
@@ -330,8 +336,31 @@ const ts = { //변수를 뽑아서 별도로 사용
   language: "TypeScript",
   organization: "Microsoft",
 };
-complain(ts); // 에러발생 =>language타입은 string으로 추론 , as const로해결가능
+complain(ts); // 에러발생 =>language타입과 organization타입은 string으로 추론 
+해결방안
+1. as const로해결가능
+2. 타입선언을 객체에 추가
 ```
-
 - 타입추론은 문맥에서도 어떻게 쓰이는지 살펴봐야한다.
 - 변수를 뽑아서 별도로 선언했을경우 오류가 발생하면 타입을 선언 or as const사용
+
+
+콜백 사용시 주의점
+
+~~~ ts
+function callWithRandomNumbers(fn:(n1:number,n2:number)=>void){
+  fn(Math.random(),Math.random())
+}
+callWithRandomNumbers((a,b)=>{
+  a, //타입 number
+  b //타입 number
+})
+
+주의할점
+- 함수를 변수에 선언할시
+const fn=(a,b)=>{
+
+}
+callWithRandomNumbers(fn)
+// 이렇게 뽑아내면 타입추론이안되서 fn의 매개변수에 따로타입을 넣어줘야한다.
+~~~
