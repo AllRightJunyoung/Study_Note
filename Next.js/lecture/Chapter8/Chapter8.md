@@ -13,7 +13,7 @@
 > Node.js의 라우팅과 같다봄 feedback.js파일을 보면알듯
 
 ## 사전 렌더링 페이지에 API라우트 사용하기
-> 사전렌더링은 클라이언트 사이드의 번들사이즈에 포함되지 x
+> 사전렌더링은 클라이언트 사이드의 번들사이즈에 포함되지 않는 장점
 ~~~ js
 //pages/feedback/index.js 
 import { buildFeedbackPath, extractFeedback } from "../api/feedback"
