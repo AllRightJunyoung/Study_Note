@@ -138,7 +138,7 @@ test("disable order button if there are no scoops ordered", async () => {
 ~~~
 
 ~~~js
-
+// 해당 인풋이 유효한것인지 확인하는 테스트
 test("indicate if scoop count is non-int or out of range", async () => {
   const user = userEvent.setup();
   render(<ScoopOption />);
