@@ -47,3 +47,5 @@
 / : Users들의 목록
 /:uid/plcaes : 선택된 사용자가 고른 장소 정보
 /authenticate : SignUp + LoginForms 
+/places/new : 새롭게 생성할 장소의 양식
+/places:pid : 장소폼을 업데이트
