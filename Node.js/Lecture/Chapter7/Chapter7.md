@@ -6,7 +6,7 @@
 
 동기식 에러 핸들링 방법
 - 데이터베이스가 없고 동기식으로 동작하는 경우에는 new throw로 핸들링해도좋다
-  - 비동기식 핸들링에서는 next(new Error('Could not find a place for the provided user id.'))
+  - 비동기식 핸들링에서는 next(new Error('Could not find a place for the provided user id.'))를 사용
 
 ~~~ js
 const express = require('express');
