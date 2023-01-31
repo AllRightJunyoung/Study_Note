@@ -17,6 +17,8 @@ const createProduct=async (req,res,next)=>{
     res.json(result)
 }
 const getProducts=async (req,res,next)=>{
+    // find는 스키마내에 모든 것을반환
+    // exec는 promise반환
     const products=await Product.find().exec()
     res.json(products)
 }

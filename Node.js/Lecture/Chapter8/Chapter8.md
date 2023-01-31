@@ -26,5 +26,10 @@
 ## Mongoose
 - MongoDB와의 데이터베이스 상호작용을 위한 더 좋은 솔루션이다. 
 
+## Mongoose 사용
+1. models의 스키마 정의
+2. 해당 스키마를 가져와서 get,post 메소드를 만든다 (mongoose.js참고)
+
 ## Mongoose Object id
 - 일종의 객체 
+- MongoDB 특유의 데이터타입
