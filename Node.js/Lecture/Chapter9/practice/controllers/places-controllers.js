@@ -27,10 +27,11 @@ const getPlaceById = async (req, res, next) => {
 
 const getPlacesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
-  let places;
+
+  let userWithPlaces
   try {
-    // 배열반환
-    places = await Place.find({creator:userId})
+    // 해당 유저의 place배열반환
+    userWithPlaces = await User.findById(userId).populate('places')
   } catch (err) {
     const error=new HttpError(
       'Fetching places failed,please try again later',
@@ -39,13 +40,13 @@ const getPlacesByUserId = async (req, res, next) => {
     return next(error)
   }
 
-  if (!places || places.length === 0) {
+  if (!userWithPlaces || userWithPlaces.places.length === 0) {
     return next(
       new HttpError('Could not find places for the provided user id.', 404)
     );
   }
 
-  res.json({ places :places.map(place=>place.toObject({getters:true}))});
+  res.json({ places :userWithPlaces.places.map(place=>place.toObject({getters:true}))});
 };
 
 const createPlace = async (req, res, next) => {
@@ -97,7 +98,7 @@ const createPlace = async (req, res, next) => {
     const sess=await mongoose.startSession()
     sess.startTransaction()
     await createdPlace.save({session:sess})
-    user.places.push(createdPlace)
+    user.places.push(createdPlace) // 우리가 참조하는 두개의 모델을 연결시켜주는 역할
     await user.save({session:sess})
     await sess.commitTransaction()
     //  이과정에서 문제가 발생될시 MongoDb가 모든 수정사항을 자동으로 롤백하게 된다
@@ -149,17 +150,32 @@ const updatePlace = async (req, res, next) => {
 };
 
 const deletePlace = async (req, res, next) => {
-  const placeId = req.params.pid;
+  const placeId = req.params.pid; 
   let place;
   try {
-    place=await Place.findById(placeId)
+    // 관계가 있는 프로퍼티의 객체 전체를제공하기위해 populate를 사용한다.
+    // creator프로퍼티에는 ID가 포함되므로 Monggose는 다른컬렉션에있는 문서의 내용에도 액세스가 가능해진다.
+    place=await Place.findById(placeId).populate('creator')
   } catch (err) {
     const error=new HttpError(
       'Something went wrong, could not delete places.',500
     )
     return next(error)
   }
+
+  if(!place){
+    const error=new HttpError('Could not find place for this id.',404)
+    return next(error)
+  }
+
   try {
+    const sess=await mongoose.startSession()
+    sess.startTransaction()
+    await place.remove({session:sess})
+    // pull은 자동으로 ID를제거한다.
+    place.creator.places.pull(place)
+    await place.creator.save({session:sess})
+    await sess.commitTransaction()
     await place.remove()
   } catch (err) {
     const error=new HttpError(
