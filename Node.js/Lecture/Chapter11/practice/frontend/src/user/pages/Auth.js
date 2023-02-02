@@ -34,7 +34,6 @@ const Auth = () => {
     },
     false
   );
-  console.log(formState)
 
   const switchModeHandler = () => {
     if (!isLoginMode) {
@@ -122,7 +121,7 @@ const Auth = () => {
               onInput={inputHandler}
             />
           )}
-          {!isLoginMode && <ImageUpload center id="image" onInput={inputHandler}/>}
+          {!isLoginMode && <ImageUpload center id="image" onInput={inputHandler} errorText="Please provide an Image."/>}
           <Input
             element="input"
             id="email"

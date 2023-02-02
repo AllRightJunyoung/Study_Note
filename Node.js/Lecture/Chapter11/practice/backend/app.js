@@ -1,3 +1,6 @@
+const fs=require('fs')
+const path=require('path')
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -9,6 +12,9 @@ const HttpError = require("./models/http-error");
 const app = express();
 
 app.use(bodyParser.json());
+
+// localhost:5001/uploads/image로 요청할시 (서버에있는 파일을 전달할떄 사용하는 미들웨어) //정적 경로로 지정
+app.use('/uploads/images',express.static(path.join('uploads','images')))
 
 app.use((req,res,next)=>{
   res.setHeader('Access-Control-Allow-Origin','*');// 어떤 도메인을 허용하는지
@@ -24,8 +30,14 @@ app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);
   throw error;
 });
-
+//잘못된 요청 처리
 app.use((error, req, res, next) => {
+  if(req.file){
+    fs.unlink(req,file.path,err=>{
+      console.log(err)
+    })
+  }
+
   if (res.headerSent) {
     return next(error);
   }

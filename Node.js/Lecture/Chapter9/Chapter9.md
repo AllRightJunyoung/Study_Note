@@ -45,6 +45,25 @@ mongoose.model('Place',placeSchema)
       - ref로 지정된 테이블에서 정보를 얻어오고 ObjectId의 정보들을 가져온다.
 
 
+## pull 메소드
+-  In MongoDB, the $pull operator is used to removing all instances of a value from an existing array
+
+~~~ js
+try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await place.remove({session: sess});
+    place.creator.places.pull(place);
+    await place.creator.save({session: sess});
+    await sess.commitTransaction();
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not delete place.',
+      500
+    );
+    return next(error);
+  }
+~~~
 
 
 ## 관계 맺기 (ref)
@@ -111,4 +130,4 @@ session.endSession();
   // 트랜젝션의 경우에는 컬렉션이 존재하지 않는 상황에서는 컬렉션도 생성해야한다.
   // 
 
-~~~
+~~~ 
