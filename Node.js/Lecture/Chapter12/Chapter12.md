@@ -22,11 +22,14 @@
 
 ~~~ js
 
-  let token;
-  token=jwt.sign({
+let token;
+token=jwt.sign({
     userId:createdUser.id,
     email:createdUser.email
-  },'supersecret_dont_share',{expiresIn :'1h'}) 
-
-
+},'supersecret_dont_share',{expiresIn :'1h'}) 
+// 2번째 인자는 private key ,3번째 인자는 토큰 만료시간 , 토큰 만료시간이 있어야 해커한테 도난 당하더라도 해커가 사용할수있는 시간이 짧아짐
 ~~~
+
+## 새로고침할때마다 로그아웃되는 이슈
+- 보통 로컬스토리지에 토큰을 저장하여 해결
+why ? 로컬스토리지 : 세션스토리지는 브라우저가 닫히면 사라짐 ,  

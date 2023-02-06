@@ -30,10 +30,10 @@ app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);
   throw error;
 });
-//잘못된 요청 처리
+//잘못된 요청 처리 (에러처리)
 app.use((error, req, res, next) => {
   if(req.file){
-    fs.unlink(req,file.path,err=>{
+    fs.unlink(req.file.path,err=>{
       console.log(err)
     })
   }

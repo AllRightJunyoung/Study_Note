@@ -23,7 +23,6 @@ const getUsers = async (req, res, next) => {
 const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-
     return next(
       new HttpError('Invalid inputs passed, please check your data.', 422)
     );
@@ -40,6 +39,7 @@ const signup = async (req, res, next) => {
     );
     return next(error);
   }
+
 
   // 패스워드 암호화
   let hashedPassword;
@@ -60,12 +60,11 @@ const signup = async (req, res, next) => {
     );
     return next(error);
   }
-
   const createdUser = new User({
     name,
     email,
     image: req.file.path,
-    hashedPassword, 
+    password:hashedPassword, 
     places: []
   });
 
@@ -73,7 +72,7 @@ const signup = async (req, res, next) => {
     await createdUser.save();
   } catch (err) {
     const error = new HttpError(
-      'Signing up failed, please try again later.',
+      'Signing up failed, please try again later. (DB SAVE ERROR)',
       500
     );
     return next(error);
@@ -132,6 +131,7 @@ const login = async (req, res, next) => {
     return next(error)
   }
 
+  // 토큰을 생성하여 사용자에게 전달
   let token;
   try {
     token=jwt.sign({
