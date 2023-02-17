@@ -12,7 +12,7 @@ router.get('/user/:uid', placesControllers.getPlacesByUserId);
 
 router.use(checkAuth)
 // 요 밑에 라우터는 checkAuth에의해 제어가 된다.
-
+// 게시글 등록 , 게시글 변경
 router.post(
   '/',
   fileUpload.single('image'),

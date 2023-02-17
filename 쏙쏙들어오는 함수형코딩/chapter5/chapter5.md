@@ -3,11 +3,39 @@
 - 복잡하게 엉킨 코드를 풀어 더 좋은 구조로 만드는법을 배움
 
 
-1. 암묵적 입력과 출력을 적게해라
-- 암묵적 입력과 출력이 존재하면 다른 컴포넌트와 강하게 연결되어있어 다른곳에서 사용하기가 어렵다
-  - 명시적 으로 바꿔서 해결하자!
 
-- 아래 코드를 명시적 입력으로 바꾸기
+## 비즈니스 요구사항과 설계를 맞춰라 !
+- 요구 사항 : 장바구니에 담긴 제품을 주문할떄 무료 배송인지 확인해라
+~~~ js
+
+// 잘못된 예시
+// total과 item_price로 무료배송인지 확인
+function gets_free_shipping(total,item_price){
+    return item_price+total>=20;
+}
+// 올바른 예시로 전환
+function gets_free_shipping(cart){
+    return calc_total(cart)>=20;
+}
+function calc_total(cart){
+    var total=0;
+    for(var i=0;i<cart.length;i++){
+        var item=cart[i]
+        total+=item.price;
+    }
+    return total
+}
+~~~
+
+## 암묵적 입력과 출력을 적게 할수록 좋다.
+- 인자가 아닌 모든 입력은 암묵적 입력이다
+- 리턴값이 아닌 모든 출력은 암묵적 출력이다.
+> 이 두가지가 존재하면 다른곳에서 사용할수 없기 때문에 모듈이 아니다.
+> 계산은 암묵적입력과 출력이 없다 고로 테스트하기가 쉬워진다.
+
+
+
+- 아래 코드를 암묵적 입력에서 명시적 입력으로 바꾸기
 ~~~ js
 function add_item_to_cart(name,price){
     shopping_cart=add_item(shoppingcart,name,price)

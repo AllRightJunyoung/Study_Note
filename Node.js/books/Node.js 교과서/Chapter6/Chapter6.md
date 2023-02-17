@@ -116,8 +116,10 @@ const upload=multer({
     limits:{fileSize:5*1024*1024}
 })
 
+// single 미들웨어는 하나의 파일업로드에만 사용
 app.post('upload',upload.single('image'),(req,res)=>{
-    res.send('ok)
+    // req.file는 업로드 한 유저의 파일정보가 담김
+    res.send('ok')
 })
 
 ~~~
