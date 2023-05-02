@@ -26,6 +26,7 @@ export function InfinitePeople() {
 
   return (
     <>
+      {/*  Fetching을 여기서 하지않으면 스크롤이 위로 올라가버림 .. 새로운 페이지가 열릴떄마다 조기반환되서 그럼 */}
       {isFetching && <div className="loading">Loading...</div>}
       <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
         {data.pages.map((pageData) => {
