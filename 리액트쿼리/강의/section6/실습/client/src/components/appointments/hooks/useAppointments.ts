@@ -109,6 +109,7 @@ export function useAppointments(): UseAppointments {
       refetchOnWindowFocus: true,
       refetchOnReconnect: true,
       // 셀렉트 함수를 통해 변환한다음 변환한 데이터를 반환함
+      
     },
   );
 
