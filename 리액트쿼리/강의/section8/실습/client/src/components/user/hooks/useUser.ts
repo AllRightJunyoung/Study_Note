@@ -11,12 +11,13 @@ import {
 } from '../../../user-storage';
 
 // query function
-async function getUser(user: User | null): Promise<User> {
+async function getUser(user: User | null, signal: AbortSignal): Promise<User> {
   if (!user) return null;
   const { data }: AxiosResponse<{ user: User }> = await axiosInstance.get(
     `/user/${user.id}`,
     {
       headers: getJWTHeader(user),
+      signal,
     },
   );
 
@@ -33,28 +34,31 @@ export function useUser(): UseUser {
   const queryClient = useQueryClient();
 
   // call useQuery to update user data from server
-  const { data: user } = useQuery(queryKeys.user, () => getUser(user), {
-    // populate initially with user in localStorage
-    initialData: getStoredUser(),
+  const { data: user } = useQuery(
+    queryKeys.user,
+    ({ signal }) => getUser(user, signal),
+    {
+      // populate initially with user in localStorage
+      initialData: getStoredUser(),
 
-    // note: onSuccess is called on both successful query function completion
-    //     *and* on queryClient.setQueryData
-    // the `received` argument to onSuccess will be:
-    //    - null, if this is called on queryClient.setQueryData in clearUser()
-    //    - User, if this is called from queryClient.setQueryData in updateUser()
-    //         *or* from the getUser query function call
-    onSuccess: (received: null | User) => {
-      if (!received) {
-        clearStoredUser();
-      } else {
-        setStoredUser(received);
-      }
+      // note: onSuccess is called on both successful query function completion
+      //     *and* on queryClient.setQueryData
+      // the `received` argument to onSuccess will be:
+      //    - null, if this is called on queryClient.setQueryData in clearUser()
+      //    - User, if this is called from queryClient.setQueryData in updateUser()
+      //         *or* from the getUser query function call
+      onSuccess: (received: null | User) => {
+        if (!received) {
+          clearStoredUser();
+        } else {
+          setStoredUser(received);
+        }
+      },
     },
-  });
+  );
 
   // meant to be called from useAuth
   function updateUser(newUser: User): void {
-    // update the user
     queryClient.setQueryData(queryKeys.user, newUser);
   }
 
