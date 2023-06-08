@@ -164,3 +164,7 @@ class MyDocument extends Document {
   }
 }
 ```
+1. Html : Next.js의 html 태그 
+2. Head : 모든페이지에서 사용될 컴포넌트
+3. Main : Next.js가 페이지 컴포넌트를 렌더링하는곳 
+4. NextScript : 커스텀 자바스크립트가 위치

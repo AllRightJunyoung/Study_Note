@@ -53,3 +53,4 @@ export default function Button(props){
 # 결론
 
 - Styled JSX 역시 서버 측에서 첫 렌더링되고 난 뒤 리액트 하이드레이션이 끝나면 클라이언트 측에서 만든 CSS를 다시렌더링해야하므로 어플리케이션 실행 시점에 부하가 걸린다.
+

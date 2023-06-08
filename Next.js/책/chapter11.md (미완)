@@ -40,3 +40,4 @@
   - Github Actions나 GitLab Pipelines를 사용하여 정적 웹 애플리케이션을 만듬
   - AWS S3에 업로드하는 파이프라인을 만들고 AWS CDN인 CloudFront를 사용해서 사용자가 HTTP 요청을 통해 웹 어플리케이션의 정적자원에 접근할수있도록해야함
   - AWS 전용 DNS서비스인 AWS Route 53을 사용해서 도메인과 CloudFront를 연결
+
