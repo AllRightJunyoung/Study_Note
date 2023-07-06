@@ -17,3 +17,13 @@
 
 - db.users.updateOne({"name.first":"Elon"},{$set : {"name.last":"musk2"}})
 - => name이 first인 Elon의 last를 musk2로 바꾼다.
+
+- db.users.updateOne({\_id:ObjectID("")},{$set : {age:1}}) => ObjectId로도 업데이트가 가능
+
+- db.users.deleteOne({\_id:ObjectID("")}) => delete
+
+MongoDB 내부 구조
+
+- 큰 (database)
+- user (collection) database 하위
+- user1(document) =>컬렉션 하위
