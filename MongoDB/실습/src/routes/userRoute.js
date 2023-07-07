@@ -1,6 +1,7 @@
+const mongoose = require("mongoose");
 const { Router } = require("express");
 const userRouter = Router();
-const User = require("../models/User");
+const { User } = require("../models");
 
 userRouter.get("/", async (req, res) => {
   try {
@@ -46,7 +47,7 @@ userRouter.delete("/:userId", async (req, res) => {
   } catch (error) {}
 });
 
-userRouter.put("/user/:userId", async (req, res) => {
+userRouter.put("/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
     if (!mongoose.isValidObjectId(userId)) return res.status(400).send({ error: "invalid userId" });
@@ -56,17 +57,15 @@ userRouter.put("/user/:userId", async (req, res) => {
     if (name && typeof name.first !== "string" && typeof name.last !== "string")
       return res.status(400).send({ error: "first and last string" });
 
-    // let updateBody = {};
-    // if (age) updateBody.age = age;
-    // if (name) updateBody.name = name;
     let user = await User.findById(userId);
     if (age) user.age = age;
     if (name) user.name = name;
     await user.save();
 
-    // const user = await User.findByIdAndUpdate(userId, updateBody, { new: true });
     return res.send({ user });
-  } catch (error) {}
+  } catch (error) {
+    return res.status(500).send({ error: error.message });
+  }
 });
 
 module.exports = {
