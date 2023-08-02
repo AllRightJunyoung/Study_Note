@@ -4,6 +4,7 @@ const axios = require("axios");
 const URI = "http://localhost:3000";
 
 generateFakeData = async (userCount, blogsPerUser, commentsPerUser) => {
+
   try {
     if (typeof userCount !== "number" || userCount < 1) throw new Error("userCount must be a positive integer");
     if (typeof blogsPerUser !== "number" || blogsPerUser < 1)
